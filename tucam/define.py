@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import platform
 from ctypes import (POINTER, Structure, c_bool, c_byte, c_char, c_char_p,
                     c_double, c_float, c_int, c_ubyte, c_uint, c_ushort,
                     c_void_p)
@@ -27,10 +28,10 @@ class TUCAMRET(Enum):
     TUCAMRET_FAILOPEN_FILE     = 0x80000115     # fail open the file
     TUCAMRET_FAILOPEN_CODEC    = 0x80000116     # fail open the video codec
     TUCAMRET_FAILOPEN_CONTEXT  = 0x80000117     # fail open the video context
-    TUCAMRET_INIT              = 0x80000201     # API requires has not initialized state.
-    TUCAMRET_BUSY              = 0x80000202     # API cannot process in busy state.
-    TUCAMRET_NOT_INIT          = 0x80000203     # API requires has initialized state.
-    TUCAMRET_EXCLUDED          = 0x80000204     # some resource is exclusive and already used.
+    TUCAMRET_INIT              = 0x80000201     # API requires has not initialized state
+    TUCAMRET_BUSY              = 0x80000202     # API cannot process in busy state
+    TUCAMRET_NOT_INIT          = 0x80000203     # API requires has initialized state
+    TUCAMRET_EXCLUDED          = 0x80000204     # some resource is exclusive and already used
     TUCAMRET_NOT_BUSY          = 0x80000205     # API requires busy state.
     TUCAMRET_NOT_READY         = 0x80000206     # API requires ready state.
     TUCAMRET_ABORT             = 0x80000207     # abort process
@@ -61,7 +62,7 @@ class TUCAMRET(Enum):
     TUCAMRET_WRONG_HANDSHAKE   = 0x80000410     # this error happens TUCAM get error code from camera unexpectedly
     TUCAMRET_NEWAPI_REQUIRED   = 0x80000411     # old API does not support the value because only new API supports the value
     TUCAMRET_ACCESSDENY        = 0x80000412     # the property cannot access during this TUCAM status
-    TUCAMRET_NO_CORRECTIONDATA = 0x80000501     # not take the dark and shading correction data yet.
+    TUCAMRET_NO_CORRECTIONDATA = 0x80000501     # not take the dark and shading correction data yet
     TUCAMRET_INVALID_PRFSETS   = 0x80000601     # the profiles set name is invalid
     TUCAMRET_INVALID_IDPPROP   = 0x80000602     # invalid process property id
     TUCAMRET_DECODE_FAILURE    = 0x80000701     # the image decoding raw data to rgb data failure
@@ -70,7 +71,7 @@ class TUCAMRET(Enum):
     TUCAMRET_WRITE_FAILURE     = 0x80000704     # the write the video frame failure
     TUCAMRET_FAIL_READ_CAMERA  = 0x83001001     # fail read from camera
     TUCAMRET_FAIL_WRITE_CAMERA = 0x83001002     # fail write to camera
-    TUCAMRET_OPTICS_UNPLUGGED  = 0x83001003     # optics part is unplugged so please check it.
+    TUCAMRET_OPTICS_UNPLUGGED  = 0x83001003     # optics part is unplugged so please check it
     TUCAMRET_RECEIVE_FINISH    = 0x00000002     # no error, vendor receive frame message
     TUCAMRET_EXTERNAL_TRIGGER  = 0x00000003     # no error, receive the external trigger signal
 
@@ -87,8 +88,8 @@ class TUCAM_IDINFO(Enum):
     TUIDI_VERSION_DRIVER     = 0x07         # the driver version
     TUIDI_TRANSFER_RATE      = 0x08         # the transfer rate
     TUIDI_CAMERA_MODEL       = 0x09         # the camera model (string)
-    TUIDI_CURRENT_WIDTH      = 0x0A         # the camera image data current width(must use TUCAM_Dev_GetInfoEx and after calling TUCAM_Buf_Alloc)
-    TUIDI_CURRENT_HEIGHT     = 0x0B         # the camera image data current height(must use TUCAM_Dev_GetInfoEx and after calling TUCAM_Buf_Alloc)
+    TUIDI_CURRENT_WIDTH      = 0x0A         # the camera image data current width (must use TUCAM_Dev_GetInfoEx and after calling TUCAM_Buf_Alloc)
+    TUIDI_CURRENT_HEIGHT     = 0x0B         # the camera image data current height (must use TUCAM_Dev_GetInfoEx and after calling TUCAM_Buf_Alloc)
     TUIDI_CAMERA_CHANNELS    = 0x0C         # the camera image data channels
     TUIDI_BCDDEVICE          = 0x0D         # the USB bcdDevice
     TUIDI_TEMPALARMFLAG      = 0x0E         # the Temperature Alarm Flag
@@ -473,8 +474,8 @@ class TUCAM_INIT(Structure):
     ''' the camera initialize struct '''
 
     _fields_ = [
-        ('uiCamCount', c_uint),                 # [out]
-        ('pstrConfigPath', c_char_p)            # [in] save the path of the camera parameters
+        ('uiCamCount', c_uint),             # [out]
+        ('pstrConfigPath', c_char_p)        # [in] save the path of the camera parameters
     ]
 
 
@@ -482,8 +483,8 @@ class TUCAM_OPEN(Structure):
     ''' the camera open struct '''
 
     _fields_ = [
-        ('uiIdxOpen', c_uint),                  # [in]
-        ('hIdxTUCam', HDTUCAM)                  # [out] the handle of the opened camera device
+        ('uiIdxOpen', c_uint),              # [in]
+        ('hIdxTUCam', HDTUCAM)              # [out] the handle of the opened camera device
     ]
 
 
@@ -491,8 +492,8 @@ class TUIMG_OPEN(Structure):
     ''' the image open struct '''
 
     _fields_ = [
-        ('pszfileName', c_char_p),              # [in] the full path of the image file
-        ('hIdxTUImg', HDTUIMG)                  # [out] the handle of the opened image file
+        ('pszfileName', c_char_p),          # [in] the full path of the image file
+        ('hIdxTUImg', HDTUIMG)              # [out] the handle of the opened image file
     ]
 
 
@@ -500,10 +501,10 @@ class TUCAM_VALUE_INFO(Structure):
     ''' the camera value info struct '''
 
     _fields_ = [
-        ('nID', c_int),                         # [in] TUCAM_IDINFO
-        ('nValue', c_int),                      # [in] value of information
-        ('pText', c_char_p),                    # [in/out] text of the value
-        ('nTextSize', c_int)                    # [in] text buf size
+        ('nID', c_int),                     # [in] TUCAM_IDINFO
+        ('nValue', c_int),                  # [in] value of information
+        ('pText', c_char_p),                # [in/out] text of the value
+        ('nTextSize', c_int)                # [in] text buf size
     ]
 
 
@@ -511,10 +512,10 @@ class TUCAM_VALUE_TEXT(Structure):
     ''' the camera value text struct '''
 
     _fields_ = [
-        ('nID', c_int),                         # [in] TUCAM_IDPROP / TUCAM_IDCAPA
-        ('dbValue', c_double),                  # [in] value of property
-        ('pText', c_char_p),                    # [in/out] text of the value
-        ('nTextSize', c_int)                    # [in] text buf size
+        ('nID', c_int),                     # [in] TUCAM_IDPROP / TUCAM_IDCAPA
+        ('dbValue', c_double),              # [in] value of property
+        ('pText', c_char_p),                # [in/out] text of the value
+        ('nTextSize', c_int)                # [in] text buf size
     ]
 
 
@@ -522,11 +523,11 @@ class TUCAM_CAPA_ATTR(Structure):
     ''' the camera capability attribute '''
 
     _fields_ = [
-        ('idCapa', c_int),                      # [in] TUCAM_IDCAPA
-        ('nValMin', c_int),                     # [out] minimum value
-        ('nValMax', c_int),                     # [out] maximum value
-        ('nValDft', c_int),                     # [out] default value
-        ('nValStep', c_int)                     # [out] minimum stepping between a value and the next
+        ('idCapa', c_int),                  # [in] TUCAM_IDCAPA
+        ('nValMin', c_int),                 # [out] minimum value
+        ('nValMax', c_int),                 # [out] maximum value
+        ('nValDft', c_int),                 # [out] default value
+        ('nValStep', c_int)                 # [out] minimum stepping between a value and the next
     ]
 
 
@@ -534,12 +535,12 @@ class TUCAM_PROP_ATTR(Structure):
     ''' the camera property attribute '''
 
     _fields_ = [
-        ('idProp', c_int),                      # [in] TUCAM_IDPROP
-        ('nIdxChn', c_int),                     # [in/out] the index of channel
-        ('dbValMin', c_double),                 # [out] minimum value
-        ('dbValMax', c_double),                 # [out] maximum value
-        ('dbValDft', c_double),                 # [out] default value
-        ('dbValStep', c_double)                 # [out] minimum stepping between a value and the next
+        ('idProp', c_int),                  # [in] TUCAM_IDPROP
+        ('nIdxChn', c_int),                 # [in/out] the index of channel
+        ('dbValMin', c_double),             # [out] minimum value
+        ('dbValMax', c_double),             # [out] maximum value
+        ('dbValDft', c_double),             # [out] default value
+        ('dbValStep', c_double)             # [out] minimum stepping between a value and the next
     ]
 
 
@@ -547,12 +548,12 @@ class TUCAM_VPROP_ATTR(Structure):
     ''' the camera vendor property attribute '''
 
     _fields_ = [
-        ('idVProp', c_int),                     # [in] TUCAM_IDVPROP
-        ('nIdxChn', c_int),                     # [in/out] the index of channel
-        ('dbValMin', c_double),                 # [out] minimum value
-        ('dbValMax', c_double),                 # [out] maximum value
-        ('dbValDft', c_double),                 # [out] default value
-        ('dbValStep', c_double)                 # [out] minimum stepping between a value and the next
+        ('idVProp', c_int),                 # [in] TUCAM_IDVPROP
+        ('nIdxChn', c_int),                 # [in/out] the index of channel
+        ('dbValMin', c_double),             # [out] minimum value
+        ('dbValMax', c_double),             # [out] maximum value
+        ('dbValDft', c_double),             # [out] default value
+        ('dbValStep', c_double)             # [out] minimum stepping between a value and the next
     ]
 
 
@@ -560,12 +561,12 @@ class TUCAM_PPROP_ATTR(Structure):
     ''' the camera process property attribute '''
 
     _fields_ = [
-        ('idPProp', c_int),                     # [in] TUCAM_IDVPROP
-        ('procType', c_int),                    # [in] TUPROC_TYPE
-        ('dbValMin', c_double),                 # [out] minimum value
-        ('dbValMax', c_double),                 # [out] maximum value
-        ('dbValDft', c_double),                 # [out] default value
-        ('dbValStep', c_double)                 # [out] minimum stepping between a value and the next
+        ('idPProp', c_int),                 # [in] TUCAM_IDVPROP
+        ('procType', c_int),                # [in] TUPROC_TYPE
+        ('dbValMin', c_double),             # [out] minimum value
+        ('dbValMax', c_double),             # [out] maximum value
+        ('dbValDft', c_double),             # [out] default value
+        ('dbValStep', c_double)             # [out] minimum stepping between a value and the next
     ]
 
 
@@ -573,11 +574,11 @@ class TUCAM_ROI_ATTR(Structure):
     ''' the camera roi attribute '''
 
     _fields_ = [
-        ('bEnable', c_bool),                    # [in/out] The ROI enable
-        ('nHOffset', c_int),                    # [in/out] The horizontal offset
-        ('nVOffset', c_int),                    # [in/out] The vertical offset
-        ('nWidth', c_int),                      # [in/out] The ROI width
-        ('nHeight', c_int)                      # [in/out] The ROI height
+        ('bEnable', c_bool),                # [in/out] The ROI enable
+        ('nHOffset', c_int),                # [in/out] The horizontal offset
+        ('nVOffset', c_int),                # [in/out] The vertical offset
+        ('nWidth', c_int),                  # [in/out] The ROI width
+        ('nHeight', c_int)                  # [in/out] The ROI height
     ]
 
 
@@ -585,12 +586,12 @@ class TUCAM_CALC_ROI_ATTR(Structure):
     ''' the camera roi calculate attribute '''
 
     _fields_ = [
-        ('bEnable', c_bool),                    # [in/out] The ROI enable
-        ('idCalc', c_int),                      # [in] TUCAM_IDCROI
-        ('nHOffset', c_int),                    # [in/out] The horizontal offset
-        ('nVOffset', c_int),                    # [in/out] The vertical offset
-        ('nWidth', c_int),                      # [in/out] The ROI width
-        ('nHeight', c_int)                      # [in/out] The ROI height
+        ('bEnable', c_bool),                # [in/out] The ROI enable
+        ('idCalc', c_int),                  # [in] TUCAM_IDCROI
+        ('nHOffset', c_int),                # [in/out] The horizontal offset
+        ('nVOffset', c_int),                # [in/out] The vertical offset
+        ('nWidth', c_int),                  # [in/out] The ROI width
+        ('nHeight', c_int)                  # [in/out] The ROI height
     ]
 
 
@@ -598,12 +599,12 @@ class TUCAM_TRIGGER_ATTR(Structure):
     ''' the camera trigger attribute '''
 
     _fields_ = [
-        ('nTgrMode', c_int),                    # [in/out] The mode of trigger
-        ('nExpMode', c_int),                    # [in/out] The mode of exposure [0, 1] 0:Exposure time   1:Width level
-        ('nEdgeMode', c_int),                   # [in/out] The mode of edge     [0, 1] 0:Falling edge    1:Rising edge
-        ('nDelayTm', c_int),                    # [in/out] The time delay
-        ('nFrames', c_int),                     # [in/out] How many frames per trigger
-        ('nBufFrames', c_int)                   # [in/out] How many frames in buffer
+        ('nTgrMode', c_int),                # [in/out] The mode of trigger
+        ('nExpMode', c_int),                # [in/out] The mode of exposure [0, 1] 0:Exposure time   1:Width level
+        ('nEdgeMode', c_int),               # [in/out] The mode of edge     [0, 1] 0:Falling edge    1:Rising edge
+        ('nDelayTm', c_int),                # [in/out] The time delay
+        ('nFrames', c_int),                 # [in/out] How many frames per trigger
+        ('nBufFrames', c_int)               # [in/out] How many frames in buffer
     ]
 
 
@@ -611,11 +612,11 @@ class TUCAM_TRGOUT_ATTR(Structure):
     ''' the camera trigger out attribute '''
 
     _fields_ = [
-        ('nTgrOutPort', c_int),                 # [in/out] The port of trigger out
-        ('nTgrOutMode', c_int),                 # [in/out] The mode of trigger out
-        ('nEdgeMode', c_int),                   # [in/out] The mode of edge     [0, 1] 1:Falling edge    0:Rising edge
-        ('nDelayTm', c_int),                    # [in/out] The time delay
-        ('nWidth', c_int)                       # [in/out] The width of pulse
+        ('nTgrOutPort', c_int),             # [in/out] The port of trigger out
+        ('nTgrOutMode', c_int),             # [in/out] The mode of trigger out
+        ('nEdgeMode', c_int),               # [in/out] The mode of edge     [0, 1] 1:Falling edge    0:Rising edge
+        ('nDelayTm', c_int),                # [in/out] The time delay
+        ('nWidth', c_int)                   # [in/out] The width of pulse
     ]
 
 
@@ -623,22 +624,22 @@ class TUCAM_FRAME(Structure):
     ''' the camera frame struct '''
 
     _fields_ = [
-        ('szSignature', c_char * 8),            # [out]Copyright+Version: TU+1.0 ['T', 'U', '1', '\0']
-        ('usHeader', c_ushort),                 # [out] The frame header size
-        ('usOffset', c_ushort),                 # [out] The frame data offset
-        ('usWidth', c_ushort),                  # [out] The frame width
-        ('usHeight', c_ushort),                 # [out] The frame height
-        ('uiWidthStep', c_uint),                # [out] The frame width step
-        ('ucDepth', c_ubyte),                   # [out] The frame data depth
-        ('ucFormat', c_ubyte),                  # [out] The frame data format
-        ('ucChannels', c_ubyte),                # [out] The frame data channels
-        ('ucElemBytes', c_ubyte),               # [out] The frame data bytes per element
-        ('ucFormatGet', c_ubyte),               # [in] Which frame data format do you want    see TUFRM_FORMATS
-        ('uiIndex', c_uint),                    # [in/out] The frame index number
-        ('uiImgSize', c_uint),                  # [out] The frame size
-        ('uiRsdSize', c_uint),                  # [in] The frame reserved size    (how many frames do you want)
-        ('uiHstSize', c_uint),                  # [out] The frame histogram size
-        ('pBuffer', POINTER(c_ubyte))           # [in/out] The frame buffer
+        ('szSignature', c_char * 8),        # [out]Copyright+Version: TU+1.0 ['T', 'U', '1', '\0']
+        ('usHeader', c_ushort),             # [out] The frame header size
+        ('usOffset', c_ushort),             # [out] The frame data offset
+        ('usWidth', c_ushort),              # [out] The frame width
+        ('usHeight', c_ushort),             # [out] The frame height
+        ('uiWidthStep', c_uint),            # [out] The frame width step
+        ('ucDepth', c_ubyte),               # [out] The frame data depth
+        ('ucFormat', c_ubyte),              # [out] The frame data format
+        ('ucChannels', c_ubyte),            # [out] The frame data channels
+        ('ucElemBytes', c_ubyte),           # [out] The frame data bytes per element
+        ('ucFormatGet', c_ubyte),           # [in] Which frame data format do you want    see TUFRM_FORMATS
+        ('uiIndex', c_uint),                # [in/out] The frame index number
+        ('uiImgSize', c_uint),              # [out] The frame size
+        ('uiRsdSize', c_uint),              # [in] The frame reserved size    (how many frames do you want)
+        ('uiHstSize', c_uint),              # [out] The frame histogram size
+        ('pBuffer', POINTER(c_ubyte))       # [in/out] The frame buffer
     ]
 
 
@@ -646,9 +647,9 @@ class TUCAM_FILE_SAVE(Structure):
     ''' the file save struct '''
 
     _fields_ = [
-        ('nSaveFmt', c_int),                    # [in] the format of save file     see TUIMG_FORMATS
-        ('pstrSavePath', c_char_p),             # [in] the path of save file
-        ('pFrame', POINTER(TUCAM_FRAME))        # [in] the struct of camera frame
+        ('nSaveFmt', c_int),                # [in] the format of save file     see TUIMG_FORMATS
+        ('pstrSavePath', c_char_p),         # [in] the path of save file
+        ('pFrame', POINTER(TUCAM_FRAME))    # [in] the struct of camera frame
     ]
 
 
@@ -656,9 +657,9 @@ class TUCAM_REC_SAVE(Structure):
     ''' the record save struct '''
 
     _fields_ = [
-        ('nCodec', c_int),                      # [in] the coder-decoder type
-        ('pstrSavePath', c_char_p),             # [in] the path of save record file
-        ('fFps', c_float)                       # [in] the current FPS
+        ('nCodec', c_int),                  # [in] the coder-decoder type
+        ('pstrSavePath', c_char_p),         # [in] the path of save record file
+        ('fFps', c_float)                   # [in] the current FPS
     ]
 
 
@@ -666,9 +667,9 @@ class TUCAM_REG_RW(Structure):
     ''' the register read/write struct '''
 
     _fields_ = [
-        ('nRegType', c_int),                    # [in] the format of register     see TUREG_TYPE
-        ('pBuf', c_char_p),                     # [in/out] pointer to the buffer value
-        ('nBufSize', c_int)                     # [in] the buffer size
+        ('nRegType', c_int),                # [in] the format of register     see TUREG_TYPE
+        ('pBuf', c_char_p),                 # [in/out] pointer to the buffer value
+        ('nBufSize', c_int)                 # [in] the buffer size
     ]
 
 
@@ -676,10 +677,10 @@ class TUCAM_DRAW_INIT(Structure):
     ''' typedef struct draw initialize '''
 
     _fields_ = [
-        ('nMode', c_int),                       # [in] (The reserved)Whether use hardware acceleration (If the GPU support) default:TUDRAW_DFT
-        ('ucChannels', c_ubyte),                # [in] The data channels
-        ('nWidth', c_int),                      # [in] The drawing data width
-        ('nHeight', c_int)                      # [in] The drawing data height
+        ('nMode', c_int),                   # [in] (The reserved)Whether use hardware acceleration (If the GPU support) default:TUDRAW_DFT
+        ('ucChannels', c_ubyte),            # [in] The data channels
+        ('nWidth', c_int),                  # [in] The drawing data width
+        ('nHeight', c_int)                  # [in] The drawing data height
     ]
 
 
@@ -687,15 +688,15 @@ class TUCAM_DRAW(Structure):
     ''' typedef struct drawing '''
 
     _fields_ = [
-        ('nSrcX', c_int),                       # [in/out] The x-coordinate, in pixels, of the upper left corner of the source rectangle
-        ('nSrcY', c_int),                       # [in/out] The y-coordinate, in pixels, of the upper left corner of the source rectangle
-        ('nSrcWidth', c_int),                   # [in/out] Width, in pixels, of the source rectangle
-        ('nSrcHeight', c_int),                  # [in/out] Height, in pixels, of the source rectangle
-        ('nDstX', c_int),                       # [in/out] The x-coordinate, in MM_TEXT client coordinates, of the upper left corner of the destination rectangle
-        ('nDstY', c_int),                       # [in/out] The y-coordinate, in MM_TEXT client coordinates, of the upper left corner of the destination rectangle
-        ('nDstWidth', c_int),                   # [in/out] Width,  in MM_TEXT client coordinates, of the destination rectangle
-        ('nDstHeight', c_int),                  # [in/out] Height, in MM_TEXT client coordinates, of the destination rectangle
-        ('pFrame', POINTER(TUCAM_FRAME))        # [in] the struct of camera frame
+        ('nSrcX', c_int),                   # [in/out] The x-coordinate, in pixels, of the upper left corner of the source rectangle
+        ('nSrcY', c_int),                   # [in/out] The y-coordinate, in pixels, of the upper left corner of the source rectangle
+        ('nSrcWidth', c_int),               # [in/out] Width, in pixels, of the source rectangle
+        ('nSrcHeight', c_int),              # [in/out] Height, in pixels, of the source rectangle
+        ('nDstX', c_int),                   # [in/out] The x-coordinate, in MM_TEXT client coordinates, of the upper left corner of the destination rectangle
+        ('nDstY', c_int),                   # [in/out] The y-coordinate, in MM_TEXT client coordinates, of the upper left corner of the destination rectangle
+        ('nDstWidth', c_int),               # [in/out] Width,  in MM_TEXT client coordinates, of the destination rectangle
+        ('nDstHeight', c_int),              # [in/out] Height, in MM_TEXT client coordinates, of the destination rectangle
+        ('pFrame', POINTER(TUCAM_FRAME))    # [in] the struct of camera frame
     ]
 
 
@@ -703,8 +704,8 @@ class TUCAM_FW_UPDATE(Structure):
     ''' the firmware update '''
 
     _fields_ = [
-        ('nFwType', c_int),                     # [in] the format of firmware     see TUFW_TYPE
-        ('pstrFwFile', c_char_p)                # [in] the path of firmware file
+        ('nFwType', c_int),                 # [in] the format of firmware     see TUFW_TYPE
+        ('pstrFwFile', c_char_p)            # [in] the path of firmware file
     ]
 
 
@@ -717,43 +718,45 @@ class TUCAM_POINT(Structure):
     ]
 
 
+n = 639 if platform.architecture()[0] == '64bit' else 655
+
 class TUCAM_IMG_HEADER(Structure):
     ''' define the struct of image header '''
 
     _fields_ = [
-        ('szSignature', c_char * 8),            # [out]Copyright+Version: TU+1.0 ['T', 'U', '1', '\0']
-        ('usHeader', c_ushort),                 # [in/out] The image header size
-        ('usOffset', c_ushort),                 # [in/out] The image data offset
-        ('usWidth', c_ushort),                  # [in/out] The image width
-        ('usHeight', c_ushort),                 # [in/out] The image height
-        ('uiWidthStep', c_uint),                # [in/out] The image width step
-        ('ucDepth', c_ubyte),                   # [in/out] The image data depth (see from CV)
-        ('ucFormat', c_ubyte),                  # [in/out] The image data format TUIMG_FORMAT
-        ('ucChannels', c_ubyte),                # [in/out] The image data channels
-        ('ucElemBytes', c_ubyte),               # [in/out] The image data bytes per element
-        ('ucFormatGet', c_ubyte),               # [in] Which frame data format do you want
-        ('uiIndex', c_uint),                    # [out] The image index number
-        ('uiImgSize', c_uint),                  # [in/out] The image size
-        ('uiRsdSize', c_uint),                  # [in/out] The image reserved size
-        ('uiHstSize', c_uint),                  # [in/out] The image histogram size
-        ('pImgData', POINTER(c_ubyte)),         # [in/out] Pointer to the image data
-        ('pImgHist', POINTER(c_uint)),          # [in/out] Pointer to the image histogram data
-        ('usLLevels', c_ushort),                # [out] The image left levels value
-        ('usRLevels', c_ushort),                # [out] The image right levels value
-        ('ucRsd1', c_byte * 64),                # The reserved
-        ('dblExposure', c_double),              # [in/out] The exposure time
-        ('ucRsd2', c_byte * 170),               # The reserved
-        ('dblTimeStamp', c_double),             # [in/out] The time stamp
-        ('dblTimeLast', c_double),              # [in/out] The time stamp last
-        ('ucRsd3', c_byte * 32),                # The reserved
-        ('ucGPSTimeStampYear', c_ubyte),        # [out] The GPS time stamp year
-        ('ucGPSTimeStampMonth', c_ubyte),       # [out] The GPS time stamp month
-        ('ucGPSTimeStampDay', c_ubyte),         # [out] The GPS time stamp day
-        ('ucGPSTimeStampHour', c_ubyte),        # [out] The GPS time stamp hour
-        ('ucGPSTimeStampMin', c_ubyte),         # [out] The GPS time stamp min
-        ('ucGPSTimeStampSec', c_ubyte),         # [out] The GPS time stamp sec
-        ('nGPSTimeStampNs', c_int),             # [out] The GPS time stamp ns
-        ('ucRsd4', c_byte * 639)                # The reserved
+        ('szSignature', c_char * 8),        # [out]Copyright+Version: TU+1.0 ['T', 'U', '1', '\0']
+        ('usHeader', c_ushort),             # [in/out] The image header size
+        ('usOffset', c_ushort),             # [in/out] The image data offset
+        ('usWidth', c_ushort),              # [in/out] The image width
+        ('usHeight', c_ushort),             # [in/out] The image height
+        ('uiWidthStep', c_uint),            # [in/out] The image width step
+        ('ucDepth', c_ubyte),               # [in/out] The image data depth (see from CV)
+        ('ucFormat', c_ubyte),              # [in/out] The image data format TUIMG_FORMAT
+        ('ucChannels', c_ubyte),            # [in/out] The image data channels
+        ('ucElemBytes', c_ubyte),           # [in/out] The image data bytes per element
+        ('ucFormatGet', c_ubyte),           # [in] Which frame data format do you want
+        ('uiIndex', c_uint),                # [out] The image index number
+        ('uiImgSize', c_uint),              # [in/out] The image size
+        ('uiRsdSize', c_uint),              # [in/out] The image reserved size
+        ('uiHstSize', c_uint),              # [in/out] The image histogram size
+        ('pImgData', POINTER(c_ubyte)),     # [in/out] Pointer to the image data
+        ('pImgHist', POINTER(c_uint)),      # [in/out] Pointer to the image histogram data
+        ('usLLevels', c_ushort),            # [out] The image left levels value
+        ('usRLevels', c_ushort),            # [out] The image right levels value
+        ('ucRsd1', c_byte * 64),            # The reserved
+        ('dblExposure', c_double),          # [in/out] The exposure time
+        ('ucRsd2', c_byte * 170),           # The reserved
+        ('dblTimeStamp', c_double),         # [in/out] The time stamp
+        ('dblTimeLast', c_double),          # [in/out] The time stamp last
+        ('ucRsd3', c_byte * 32),            # The reserved
+        ('ucGPSTimeStampYear', c_ubyte),    # [out] The GPS time stamp year
+        ('ucGPSTimeStampMonth', c_ubyte),   # [out] The GPS time stamp month
+        ('ucGPSTimeStampDay', c_ubyte),     # [out] The GPS time stamp day
+        ('ucGPSTimeStampHour', c_ubyte),    # [out] The GPS time stamp hour
+        ('ucGPSTimeStampMin', c_ubyte),     # [out] The GPS time stamp min
+        ('ucGPSTimeStampSec', c_ubyte),     # [out] The GPS time stamp sec
+        ('nGPSTimeStampNs', c_int),         # [out] The GPS time stamp ns
+        ('ucRsd4', c_byte * n)              # The reserved
     ]
 
 
@@ -761,26 +764,19 @@ class TUCAM_RAWIMG_HEADER(Structure):
     ''' Define the struct of raw image header '''
 
     _fields_ = [
-        ('usWidth', c_ushort),                  # [in/out] The image width
-        ('usHeight', c_ushort),                 # [in/out] The image height
-        ('ucDepth', c_ubyte),                   # [in/out] The image data depth (see from CV)
-        ('ucChannels', c_ubyte),                # [in/out] The image data channels
-        ('ucElemBytes', c_ubyte),               # [in/out] The image data bytes per element
-        ('uiIndex', c_uint),                    # [out] The image index number
-        ('uiImgSize', c_uint),                  # [in/out] The image size
-        ('dblExposure', c_double),              # [in/out] The exposure time
-        ('pImgData', POINTER(c_ubyte)),         # [in/out] Pointer to the image data
-        ('dblTimeStamp', c_double),             # [in/out] The time stamp
-        ('dblTimeLast', c_double)               # [in/out] The time stamp last
+        ('usWidth', c_ushort),              # [in/out] The image width
+        ('usHeight', c_ushort),             # [in/out] The image height
+        ('ucDepth', c_ubyte),               # [in/out] The image data depth (see from CV)
+        ('ucChannels', c_ubyte),            # [in/out] The image data channels
+        ('ucElemBytes', c_ubyte),           # [in/out] The image data bytes per element
+        ('uiIndex', c_uint),                # [out] The image index number
+        ('uiImgSize', c_uint),              # [in/out] The image size
+        ('dblExposure', c_double),          # [in/out] The exposure time
+        ('pImgData', POINTER(c_ubyte)),     # [in/out] Pointer to the image data
+        ('dblTimeStamp', c_double),         # [in/out] The time stamp
+        ('dblTimeLast', c_double)           # [in/out] The time stamp last
     ]
 
 
-########################
-
-
-class NVILen(object):
-    pass
-
-
-class BUFFER_CALLBACK(object):
+class NVILen(c_void_p):
     pass
